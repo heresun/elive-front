@@ -1,6 +1,7 @@
 module.exports = {
-    publicPath:"/",
+    publicPath: "/",
     devServer: {
         port: 800,     // 端口号
-    }
+    },
+
 };

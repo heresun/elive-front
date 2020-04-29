@@ -9,7 +9,6 @@
                 <el-col>
                     <Login></Login>
                 </el-col>
-
             </el-row>
         </el-dialog>
         <!--注册模态框-->
@@ -23,10 +22,10 @@
             </el-row>
         </el-dialog>
         <!--==================================================================================================================-->
-        <el-row style="background-color: #39ac6a">
+        <el-row class="navigatorBox" :style="navigatorBox">
 
             <el-col :span="2" :offset="4">
-                <img src="../assets/eeSmall.png"
+                <img src="../../assets/eeSmall.png"
                      style="width: 100px;vertical-align: central;margin: 3px auto 1px auto"/>
             </el-col>
             <el-col :span="12" class="navText">
@@ -34,10 +33,9 @@
                     <li>
                         <router-link to="/" class="router-link-active"><span class="text">主 页</span></router-link>
                     </li>
-                    <li>
-                        <span class="text" @click="rentHouse">租 房</span>
-                    </li>
-                    <li><span class="text" @click="buyHouse">买 房</span></li>
+
+                    <li><span class="text" @click="buyHouseNew">新 房</span></li>
+                    <li><span class="text" @click="buyHouseUsed">二手房</span></li>
                     <li><span class="text" @click="publishHouse">发布房源</span></li>
                     <li><span class="text" @click="layoutAnalysis">户型分析</span></li>
                     <li><span class="text" @click="priceAnalysis">房价分析</span></li>
@@ -81,8 +79,8 @@
 </template>
 
 <script>
-    import Login from "@/pages/Login";
-    import Sign from "@/pages/Sign";
+    import Login from "@/components/login_sign/Login";
+    import Sign from "@/components/login_sign/Sign";
 
     export default {
         name: "Navigator",
@@ -90,14 +88,18 @@
             Login,
             Sign
         },
+        props:{
+          "color":String
+        },
         data() {
             return {
-                state: this.$store.state
+                state: this.$store.state,
+                navigatorBox:{backgroundColor:this.color}
             };
         },
         methods: {
             logout() {
-                this.$axios.post("/user/logout")
+                this.$axios.post("/user/logout.do")
                     .then(response => {
                         if (response.data === "ok") {
 
@@ -105,6 +107,7 @@
                             this.state.globalHeaderNotState = "";
                             this.state.globalHeaderYesState = "none";
                             this.state.globalAccount = "";
+                            this.state.globalCollections=[];
 
                             this.$message.success("退出成功！");
                             //返回主页
@@ -117,40 +120,26 @@
                     });
             },
             publishHouse(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
+
                 this.$router.push("/house/publish");
             },
-            rentHouse(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
-                this.$router.push("/house/rent");
+
+            buyHouseNew(){
+
+                this.$router.push("/house/onSaleNew");
             },
 
-            buyHouse(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
-                this.$router.push("/house/buy");
+            buyHouseUsed(){
+
+                this.$router.push("/house/onSaleUsed");
             },
             layoutAnalysis(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
+
                 this.$router.push("/house/analysis/layout");
             },
 
             priceAnalysis(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
+
                 this.$router.push("/house/analysis/price");
             }
         }
@@ -172,6 +161,10 @@
         margin: 0px;
         align-content: center;
         margin-left: 100px
+    }
+
+    .navigatorBox{
+        background-color: #39ac6a;
     }
 
     ul > li {

@@ -23,7 +23,7 @@
                 </el-form-item>
 
                 <el-button class="el-button--primary" @click="sign(`ruleForm`)">注册</el-button>
-                <el-button class="el-button--default" @click="$store.state.signDialogVisible=false">取消</el-button>
+                <el-button class="el-button--default" @click="$store.state.globalSignDialogVisible=false">取消</el-button>
             </el-form>
 
         </div>
@@ -75,7 +75,7 @@
                 rules: {
                     account: [
                         {required: true, message: '请输入', trigger: 'blur'},
-                        {pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '请输入合法的手机号码', trigger: 'blur'},
+                        {pattern: /^[1][3,4,5,6,7,8][0-9]{9}$/, message: '请输入合法的手机号码', trigger: 'blur'},
                         {validator: accountVer, trigger: 'blur'},
                     ],
                     password: [
@@ -124,18 +124,19 @@
                         // form.append("address", this.ruleForm.address);
                         form.append("phone", this.ruleForm.phone);
 
-                        this.$axios.post("/user/sign", form).then(res => {
+                        this.$axios.post("/user/sign.do", form).then(res => {
                             if (res.data == "ok") {
                                 this.$message.success("注册成功!正在跳转到主页")
-                                this.$axios.post("/util/sleep").then(res => {
+                                this.$axios.post("/util/sleep.do").then(res => {
                                     if (res.data == "ok") {
                                         this.$store.state.globalSignDialogVisible = false;
-                                        this.$store.state.globalLoginDialogVisible = false;
+                                        this.$store.state.globalLoginDialogVisible = true;
                                         this.$store.state.globalIsLogin = true;
-                                        this.$store.state.globalAccount = this.ruleForm.account;
-                                        this.$store.state.globalHeaderNotState="none";
-                                        this.$store.state.globalHeaderYesState="";
+                                        // this.$store.state.globalHeaderNotState="none";
+                                        // this.$store.state.globalHeaderYesState="";
                                         this.$router.replace("/")
+
+
                                     }
                                 })
                             }

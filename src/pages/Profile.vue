@@ -73,23 +73,23 @@
 </template>
 
 <script>
-    import Navigator from "@/components/Navigator";
+    import Navigator from "@/components/common/Navigator";
     // 收藏
-    import Collection from "@/components/Collection";
+    import Collection from "@/components/profile/Collection";
     //交易
-    import Transaction from "@/components/Transaction";
+    import Transaction from "@/components/profile/Transaction";
     // 合同
-    import Contract from "@/components/Contract";
+    import Contract from "@/components/profile/Contract";
     // 预约
-    import Appointment from "@/components/Appointment";
+    import Appointment from "@/components/profile/Appointment";
     // 看房记录
-    import Inspection from "@/components/Inspection";
+    import Inspection from "@/components/profile/Inspection";
     // 编辑资料
-    import EditInfo from "@/components/EditInfo";
+    import EditInfo from "@/components/profile/EditInfo";
     // 用户发布的房源
-    import PublishedHouse from "@/components/PublishedHouse";
+    import PublishedHouse from "@/components/profile/PublishedHouse";
 
-    import Footer from "@/components/Footer";
+    import Footer from "@/components/common/Footer";
     export default {
         name: "Profile",
         data() {
@@ -162,7 +162,18 @@
                 })
             }
         },
+        beforeCreate(){
+            this.$axios.get("/util/isLogin.do").then(res=>{
+                if (!res.data){
+                    this.$router.push("/");
+                }
+            }).catch(err=>{
+                console.log(err)
+            });
+        },
+
         mounted(){
+
             this.showSelected("collection");
         }
 

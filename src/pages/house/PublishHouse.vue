@@ -1,14 +1,13 @@
 <template>
     <div id="container">
         <el-row>
-            <Navigator></Navigator>
+            <Navigator color="#394043"></Navigator>
         </el-row>
         <div class="headDiv">
             <el-row>
                 <el-col :span="18" :offset="3">
                     <ul>
-                        <li :class="{active:flag===true}" @click="sale">我要卖房</li>
-                        <li :class="{active:flag===false}" @click="lease">我要出租</li>
+                        <li >我要卖房</li>
                     </ul>
                 </el-col>
             </el-row>
@@ -20,8 +19,7 @@
         <el-row>
             <el-col :span="16" :offset="4">
                 <div>
-                    <SaleHouse :style="`display:${saleHouse}`"></SaleHouse>
-                    <LeaseHouse :style="`display:${leaseHouse}`"></LeaseHouse>
+                    <SaleHouse></SaleHouse>
                 </div>
             </el-col>
         </el-row>
@@ -33,44 +31,35 @@
                 </div>
             </el-col>
         </el-row>
+        <div style="height: 100px"></div>
+        <el-row>
+            <Footer></Footer>
+        </el-row>
     </div>
 </template>
 
 <script>
-    import Navigator from "@/components/Navigator";
-    import SaleHouse from "@/components/SaleHouse";
-    import LeaseHouse from "@/components/LeaseHouse";
-
+    import Navigator from "@/components/common/Navigator";
+    import SaleHouse from "@/components/publish/SaleHouse";
+    import Footer from "@/components/common/Footer";
     export default {
         name: "PublishHouse",
+        components: {
+            Navigator,
+            SaleHouse,
+            Footer
+        },
         data() {
             return {
                 contentHead: "发布售卖房源",
                 saleHouse: "",
                 leaseHouse: "none",
-                flag: true
             }
         },
 
-        components: {
-            Navigator,
-            SaleHouse,
-            LeaseHouse
-        },
+
         methods: {
-            sale() {
-                this.leaseHouse = "none";
-                this.saleHouse = "";
-                this.flag = true
-                this.contentHead = "发布售卖房源"
-            },
 
-            lease() {
-                this.saleHouse = "none";
-                this.leaseHouse = "";
-                this.flag = false
-                this.contentHead = "发布出租房源"
-            }
         }
     }
 </script>
@@ -80,6 +69,7 @@
     .headDiv {
         text-align: center;
         background-color: #f5f5f6;
+        margin-bottom: 50px;
         /*padding: 50px 0px 50px 0px;*/
     }
 

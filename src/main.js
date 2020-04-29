@@ -21,7 +21,7 @@ Vue.config.productionTip = false;
 axios.defaults.baseURL = "http://localhost:8080/elive";
 // 将其设置为false意为不携带cookie，因为携带cookie就无法通过CROS检测，
 // 在CORS中，Credential不接受http响应首部中的‘Access-Control-Allow-Origin’设置为通配符‘*’
-axios.defaults.withCredentials = false
+axios.defaults.withCredentials = true
 //设置默认的响应处理，如果没有这个，无论请求失败成功，都被catch捕获
 var myInterceptor = axios.interceptors.request.use(function () {/*...*/
 });

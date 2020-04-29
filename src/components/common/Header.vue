@@ -58,21 +58,19 @@
         </el-row>
         <div style="height: 10px"></div>
         <el-row type="flex" justify="end" >
-            <el-col :span="12">
+            <el-col :span="10">
                 <div >
-                    <img src="../assets/ee.png" width="120">
+                    <img src="../../assets/ee.png" width="120">
                 </div>
             </el-col>
 
-            <el-col :span="10">
+            <el-col :span="12">
                 <ul>
                     <li>
                         <router-link to="/" class="router-link-active"><span class="text">主 页</span></router-link>
                     </li>
-                    <li>
-                        <span class="text" @click="rentHouse">租 房</span>
-                    </li>
-                    <li><span class="text" @click="buyHouse">买 房</span></li>
+                    <li><span class="text" @click="buyNewHouse">新 房</span></li>
+                    <li><span class="text" @click="buyUsedHouse">二手房</span></li>
                     <li><span class="text" @click="publishHouse">发布房源</span></li>
                     <li><span class="text" @click="layoutAnalysis">户型分析</span></li>
                     <li><span class="text" @click="priceAnalysis">房价分析</span></li>
@@ -85,8 +83,8 @@
 </template>
 
 <script>
-    import Login from "@/pages/Login";
-    import Sign from "@/pages/Sign";
+    import Login from "@/components/login_sign/Login";
+    import Sign from "@/components/login_sign/Sign";
 
     export default {
         name: "Header",
@@ -101,7 +99,7 @@
         },
         methods: {
             logout() {
-                this.$axios.post("/user/logout")
+                this.$axios.post("/user/logout.do")
                     .then(response => {
                         if (response.data === "ok") {
 
@@ -122,41 +120,26 @@
             },
 
             publishHouse(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
+
                 this.$router.push("/house/publish");
             },
 
-            rentHouse(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
-                this.$router.push("/house/rent");
-            },
 
-            buyHouse(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
-                this.$router.push("/house/buy");
+            buyNewHouse(){
+
+                this.$router.push("/house/onSaleNew");
+            },
+            buyUsedHouse(){
+
+                this.$router.push("/house/onSaleUsed");
             },
             layoutAnalysis(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
+
                 this.$router.push("/house/analysis/layout");
             },
 
             priceAnalysis(){
-                if (!this.state.globalIsLogin){
-                    this.state.globalLoginDialogVisible = true;
-                    return;
-                }
+
                 this.$router.push("/house/analysis/price");
             }
 

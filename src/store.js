@@ -23,7 +23,8 @@ const state = {
   // 用户收藏的房屋id列表
   globalCollections:[],
   //接口的请求基地址
-  requestUrl: "http://localhost:8080/elive"
+  requestUrl: "http://localhost:8080/elive",
+
 };
 
 const actions = {

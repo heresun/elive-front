@@ -18,13 +18,15 @@
                     </div>
                 </el-col>
                 <el-col :span="6">
-                    <el-row type="flex" justify="center" style="margin-top: 10px">
-                        <SearchBox></SearchBox>
+                    <el-row type="flex" justify="center" style="margin-top: 34px">
+                        <SearchBox border="1px solid lightgray" but-text="搜索"
+                                   box-height="30px" box-width="200px"
+                                   but-height="32px" but-width="90px" size="small" type="primary"></SearchBox>
                     </el-row>
-                    <el-row type="flex" justify="center" style="margin-top: 50px">
+                    <el-row type="flex" justify="center" style="margin-top: 26px">
                         <el-col :span="6" class="topTip">
                             <span style="font-size: 15px">收藏数:</span>
-                            <span style="color: chocolate;font-size: 20px;vertical-align: center">{{collectCount}}</span>
+                            <span style="color: #d25d3a;font-size: 20px;vertical-align: center">{{collectCount}}</span>
                         </el-col>
                         <el-col :span="6" class="topTip">
                             <div style="display: inline-block; ">
@@ -45,50 +47,7 @@
         </div>
 
         <el-row>
-            <el-col :span="6" :offset="4" style="width: 300px">
-                <el-form label-position="left" inline class="demo-table-expand">
-                    <el-form-item label="户型" class="info">
-                        <span>{{info.layout}}</span>
-                    </el-form-item>
-                    <br/>
-                    <el-form-item label="面积" class="info-special">
-                        <span class="areaSize">{{info.areaSize}}</span> <sub><span class="unit">平 米</span></sub>
-                    </el-form-item>
-                    <br>
-                    <el-form-item label="价格" class="info-special">
-                        <span class="price">{{info.price}} </span> <sub><span class="unit">万元</span></sub>
-                    </el-form-item>
-                    <br/>
-                    <el-form-item label="标签" class="info">
-                        <span class="tag">{{info.tag}}</span>
-                    </el-form-item>
-                    <br/>
-                    <el-form-item label="发布人" class="info">
-                        <span>{{info.owner}}</span>
-                    </el-form-item>
-                    <br/>
-                    <el-form-item label="发布时间" class="info">
-                        <span>{{info.pubDate}}</span>
-                    </el-form-item>
-                    <br/>
-                    <el-form-item label="使用年限" class="info">
-                        <span>{{info.servLife}} 年</span>
-                    </el-form-item>
-
-                    <br>
-
-                    <el-form-item label="咨询电话" class="info">
-                        <span>{{owner.phone}}</span>
-                    </el-form-item>
-                    <br/>
-                    <el-form-item label="房源地址" class="info">
-                        <span>{{topAddr+info.address}}</span>
-                    </el-form-item>
-
-                </el-form>
-            </el-col>
-
-            <el-col :span="10" :offset="1">
+            <el-col :span="10" :offset="4">
                 <div class="imgContainer">
                     <el-scrollbar style="height: 100%">
                         <div class="image__lazy">
@@ -101,9 +60,96 @@
                     </el-scrollbar>
                 </div>
             </el-col>
+            <el-col :span="6" :offset="1" style="width: 300px">
+                <el-form label-position="left" inline class="demo-table-expand">
+                    <el-form-item label="户型" class="info">
+                        <span>{{info.bedroom+"室"+info.livingroom+"厅"+info.kitchen+"厨"+info.bathroom+"卫"}}</span>
+                    </el-form-item>
+                    <br/>
+                    <el-form-item label="面积" class="info-special">
+                        <span class="areaSize">{{info.areaSize}}</span> <sub><span class="unit">平 米</span></sub>
+                    </el-form-item>
+                    <br>
+                    <el-form-item label="价格" class="info-special">
+                        <span class="price">{{info.price}} </span> <sub><span class="unit">{{unit}}</span></sub>
+                    </el-form-item>
+                    <br/>
+                    <el-form-item label="发布人" class="info">
+                        <span>{{owner.username}}</span>
+                    </el-form-item>
+                    <br/>
+                    <el-form-item label="发布时间" class="info">
+                        <span>{{info.pubDate}}</span>
+                    </el-form-item>
+                    <br/>
+                    <el-form-item label="使用年限" class="info">
+                        <span>{{info.servLife}} 年</span>
+                    </el-form-item>
+                    <br>
+                    <el-form-item label="咨询电话" class="info">
+                        <span>{{owner.phone}}</span>
+                    </el-form-item>
+                    <br/>
+                    <el-form-item label="房源地址" class="info">
+                        <span>{{info.address}}</span>
+                    </el-form-item>
+
+                </el-form>
+            </el-col>
+
 
         </el-row>
-        <div style="height: 100px;"></div>
+
+        <div style="height: 20px;"></div>
+
+        <el-row>
+            <el-col :span="16" :offset="4">
+                <el-divider content-position="center"><span style="font-weight: bold;font-size: 20px">详细信息</span>
+                </el-divider>
+                <el-col :span="8" :offset="4">
+                    <ul class="helpInfo">
+                        <li>
+                            面积: {{info.areaSize}}平方米
+                        </li>
+                        <li>
+                            供暖: {{info.heating}}
+                        </li>
+                        <li>
+                            用电: {{info.electric}}
+                        </li>
+                        <li>
+                            用水: {{info.water}}
+                        </li>
+
+                        <li>
+                            楼层: {{info.level}}楼
+                        </li>
+
+                    </ul>
+                </el-col>
+                <el-col :span="8" :offset="4">
+                    <ul class="helpInfo">
+                        <li>
+                            朝向: {{info.orientedDirection}}
+                        </li>
+
+                        <li>
+                            燃气: {{info.naturalGas==0?'无':'有'}}
+                        </li>
+
+                        <li>
+                            车位: {{info.parkingLot==0?'无':'有'}}
+                        </li>
+
+                        <li>
+                            装修: {{info.renovation}}
+                        </li>
+                    </ul>
+                </el-col>
+
+            </el-col>
+        </el-row>
+        <div style="height: 50px"></div>
         <el-row style="background-color: #f5f5f5">
             <Footer></Footer>
         </el-row>
@@ -111,9 +157,9 @@
 </template>
 
 <script>
-    import Navigator from "@/components/Navigator";
-    import Footer from "@/components/Footer";
-    import SearchBox from "@/components/SearchBox";
+    import Navigator from "@/components/common/Navigator";
+    import Footer from "@/components/common/Footer";
+    import SearchBox from "@/components/common/SearchBox";
     import {getDateStr, removeCollection} from "@/utils/utils";
 
 
@@ -130,16 +176,24 @@
                 owner: "",
                 collectCount: 0,
                 images: [],
-                topAddr: "",
                 // 收藏相关
 
                 buttonType: "primary",
                 collectText: "未收藏",
+                unit: ""
+
+                // 附加信息
             };
         },
 
         methods: {
             collectOrCancel() {
+
+                if (!this.$store.state.globalIsLogin) {
+                    this.$store.state.globalLoginDialogVisible = true;
+                    return;
+                }
+
                 // 取消收藏
                 if (this.$store.state.globalCollections.indexOf(this.info.id) > -1) {
                     this.$confirm('确认取消收藏?', '取消收藏', {
@@ -147,26 +201,28 @@
                         cancelButtonText: "取消",
                         type: "warning",
                     }).then(() => {
-                        this.$axios.delete("/collection/deleteOne", {params: {id: this.info.cId}}).then(res => {
+                        this.$axios.get("/collection/deleteOne.do?houseId=" + this.info.id + "&userId=" + this.$store.state.globalUserId).then(res => {
                             console.log(this.$store.state.globalCollections);
                             this.buttonType = "primary";
                             this.collectText = "未收藏";
                             this.$store.state.globalCollections =
                                 removeCollection(this.$store.state.globalCollections, this.info.id);
-                            this.collectCount--;
+                            if (this.collectCount > 0) {
+
+                                this.collectCount--;
+                            }
                             console.log(res);
                             console.log(this.$store.state.globalCollections);
                         });
                     }).catch(() => {
                         console.log("取消取消收藏");
                     });
-
                 } else { //加入收藏
 
                     let form = new FormData();
                     form.append("houseId", this.info.id);
                     form.append("userId", this.$store.state.globalUserId);
-                    this.$axios.post("/collection/addOne", form).then(res => {
+                    this.$axios.post("/collection/addOne.do", form).then(res => {
                         if (res.data > 0) {
                             this.buttonType = "warning";
                             this.collectText = "已收藏";
@@ -184,29 +240,36 @@
         },
 
         mounted() {
-            this.$axios.get("/house/getOne?id=" + this.$route.params.id).then(res => {
-                let houses = res.data;
-                houses[0].pubDate = getDateStr(houses[0].pubDate)
-                if (houses.length < 0) {
+            this.$axios.get("/house/getOne.do?id=" + this.$route.params.id).then(res => {
+                let house = res.data;
+                console.log(res)
+                house.pubDate = getDateStr(house.pubDate)
+                if (house.length < 0) {
                     alert("呀,出错了1!")
                 } else {
-                    this.info = houses[0];
+                    this.info = house;
+                    if (this.info.tagId == 3) {
+                        this.unit = "元/月"
+                    } else {
+                        this.unit = "万元"
+                    }
                     this.info.cId = this.$route.params.cId;
                     if (this.$store.state.globalCollections.indexOf(this.info.id) > -1) {
                         this.buttonType = "warning";
-                        this.collectText = "已收藏"
+                        this.collectText = "已收藏";
                     }
 
                     // 获取本套房子的收藏数
-                    this.$axios.get("/collection/getCount?houseId="+houses[0].id).then(res=>{
+                    this.$axios.get("/collection/getCount.do?houseId=" + house.id).then(res => {
                         this.collectCount = res.data;
                     });
 
                     // 请求房屋主人的信息
-                    this.$axios.get("/user/getOne?ownerId=" + houses[0].ownerId).then(res => {
+                    this.$axios.get("/user/getOne.do?ownerId=" + house.ownerId).then(res => {
                         if (res.data.length <= 0) {
                             alert("呀,出错了2!");
                         } else {
+
                             this.owner = res.data[0];
                         }
                     }).catch(err => {
@@ -214,7 +277,7 @@
                         console.log(err);
                     });
                     // 请求房屋的图片
-                    this.$axios.get("/img/getImgUrls?houseId=" + houses[0].id).then(res => {
+                    this.$axios.get("/image/url.do?houseNumber=" + house.houseNumber).then(res => {
                         if (res.data.length <= 0) {
                             alert("呀,出错了3!");
                         } else {
@@ -224,15 +287,8 @@
                         console.log("获取房屋图片失败");
                         console.log(err);
                     });
-
-                    // 请求房屋的基地址
-                    this.$axios.get("/district/houseAddr?areaId=" + houses[0].areaId).then(res => {
-                        this.topAddr = res.data;
-                    })
                 }
             });
-
-
         }
     }
 </script>
@@ -338,5 +394,10 @@
         border-radius: 2px;
     }
 
+    .helpInfo > li {
+        list-style: none;
+        margin-top: 10px;
+        font-size: 16px;
+    }
 
 </style>

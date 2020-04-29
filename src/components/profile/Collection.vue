@@ -12,7 +12,8 @@
                 <el-table-column
                         prop="date"
                         label="发布日期"
-                        width="150">
+                        width="150"
+                        sortable>
                 </el-table-column>
                 <el-table-column
                         prop="ownerName"
@@ -21,13 +22,13 @@
                 </el-table-column>
                 <el-table-column
                         prop="price"
-                        label="价格/元"
-                        width="120">
+                        label="价格/万元"
+                        width="120" sortable>
                 </el-table-column>
                 <el-table-column
                         prop="areaSize"
-                        label="面积"
-                        width="120">
+                        label="面积/平方米"
+                        width="140" sortable>
                 </el-table-column>
                 <el-table-column
                         label="查看详情">
@@ -49,14 +50,13 @@
 
 <script>
 
-    import {getDateStr, remove, removeCollection} from "../utils/utils";
+    import {getDateStr, remove, removeCollection} from "../../utils/utils";
 
     export default {
         name: "Collection",
         data() {
             return {
                 houses: [],
-                images: [],
                 tableData: []
             }
         },
@@ -68,14 +68,11 @@
                     type: "warning",
                 }).then(() => {
                     console.log(row.cId);
-                    this.$axios.delete("/collection/deleteOne", {params: {id: row.cId}}).then(res => {
-                        if (res.data == "ok") {
+                    this.$axios.get("/collection/deleteOne.do?id="+row.cId).then(res => {
                             this.tableData = remove(this.tableData, row.cId);
                             this.$store.state.globalCollections =
                                 removeCollection(this.$store.state.globalCollections, row.id);                            this.$message.success("取消收藏成功!");
-                        } else {
-                            this.$message.error("请重试!");
-                        }
+                        console.log(res)
                     });
                 }).catch(() => {
                     console.log("取消取消收藏");
@@ -89,9 +86,10 @@
                 console.log(row.id)
             }
         },
-        mounted() {
 
-            this.$axios.get("/collection/all?account=" + this.$store.state.globalAccount).then(res => {
+        mounted() {
+            this.$axios.get("/collection/all.do").
+            then(res => {
                 console.log("res.data:");
                 console.log(res.data);
                 this.houses = res.data;
@@ -104,8 +102,8 @@
                         cId: this.houses[i].cid,
                         date: date,
                         ownerName: this.houses[i].owner,
-                        price: this.houses[i].price + "万",
-                        areaSize: this.houses[i].areaSize + "平方米",
+                        price: this.houses[i].price ,
+                        areaSize: this.houses[i].areaSize ,
 
                     };
 

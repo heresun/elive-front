@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="container">
 
         <!--搜过框与导航栏-->
         <!--        <div id="bgImg"></div>-->
@@ -21,23 +21,47 @@
                     </div>
 
                     <div class="searchBox">
-                        <span>
-                            <input type="text" v-model="input" placeholder="请输入地址开始找房" class="searchInput"/>
-                        </span>
-                        <span>
-                            <el-button type="primary" icon="el-icon-search" class="searchButton">开始找房</el-button>
-                        </span>
+                        <SearchBox
+                                but-text="开始找房"
+                                box-height="45px"
+                                box-width="500px"
+                                but-height="45px"
+                                but-width="150px" type="primary"></SearchBox>
                     </div>
                 </el-row>
             </div>
         </div>
 
-        <div style="height: 20px"></div>
+        <!--        <div style="height: 20px"></div>-->
+        <el-row class="rowContent" style="margin-top: 50px">
+            <ExhibitionHouseCmp to-house-list-url="/house/recommend/1" desc="专属于您的精选好房" title="更多推荐"
+            ></ExhibitionHouseCmp>
+        </el-row>
+
+        <el-row class="rowContent" style="background-color: #eeeef1">
+            <ExhibitionHouseCmp to-house-list-url="/house/onSaleNew" desc="新房新起点" title="更多在售新房"
+            exhibition-url="/house/housePage.do" :type="0"></ExhibitionHouseCmp>
+        </el-row>
+
+        <el-row class="rowContent">
+
+            <ExhibitionHouseCmp to-house-list-url="/house/onSaleUsed" desc="二手好房，为你而选" title="更多精品二手房"
+                                exhibition-url="/house/housePage.do" :type="1"></ExhibitionHouseCmp>
+        </el-row>
 
         <el-row>
             <el-button type="primary" @click="$router.replace('/user/profile')">个人主页</el-button>
             <el-button type="primary" @click="$router.replace('/house/info')">房屋详情页</el-button>
             <el-button type="primary" @click="$router.replace('/test')">测试</el-button>
+            <div>
+                <SearchBox
+                        but-text=""
+                        box-height="45px"
+                        box-width="200px"
+                        but-height="45px"
+                        but-width="50px" type="text" but-color="white"></SearchBox>
+            </div>
+
         </el-row>
 
         <el-row>
@@ -48,23 +72,27 @@
 </template>
 
 <script>
-    import Header from "@/components/Header";
-    import Footer from "@/components/Footer";
+    import Header from "@/components/common/Header";
+    import Footer from "@/components/common/Footer";
+    import SearchBox from "@/components/common/SearchBox";
+    import ExhibitionHouseCmp from "@/components/index/ExhibitionHouseCmp";
 
     export default {
         name: 'App',
         components: {
             Header,
-            Footer
+            Footer,
+            SearchBox,
+            ExhibitionHouseCmp
 
         },
         data() {
             return {
                 state: this.$store.state,
-                input: ''
+                input: '',
             }
         },
-        methods: {}
+
     }
 </script>
 
@@ -74,27 +102,16 @@
         width: 1519px;
     }
 
-    #bgImg {
-        background: black url("../assets/background.jpg") no-repeat;
-        height: 540px;
-        width: 100%;
-        z-index: -1;
-        /*position: absolute;*/
-        background-attachment: fixed;
-        background-position: center 0;
-        display: block;
-        position: relative;
-    }
 
     #row_head {
 
         background: black url("../assets/background.jpg") no-repeat;
         height: 610px;
-        width: 1519.2px;
+        width: 100%;
         padding-top: 30px;
         /*position: absolute;*/
         background-attachment: fixed;
-        background-position: center 0;
+        /*background-position: center 0;*/
         display: block;
         position: relative;
     }
@@ -106,11 +123,6 @@
         margin-bottom: 80px;
     }
 
-    .searchInput {
-        height: 44.4px;
-        width: 500px;
-        padding-left: 20px;
-    }
 
     .searchBox {
         display: flex;
@@ -118,10 +130,10 @@
         /*border-radius: 10px;*/
     }
 
-    .searchButton {
-        border-radius: 0px;
-        height: 50.5px;
-        width: 150px;
+    .rowContent {
+        margin-top: 100px;
+        padding: 50px 0px 50px 0px;
     }
+
 
 </style>

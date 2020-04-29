@@ -3,7 +3,7 @@
 
         <div id="container">
             <div align="center" style="margin-bottom: 10px">
-                <img  src="../assets/logo.png" width="65%"/>
+                <img src="../../assets/logo.png" width="65%"/>
             </div>
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px"
                      class="demo-ruleForm">
@@ -17,9 +17,11 @@
                 <el-form-item label-width="auto">
 
                     <span style="width: 20%;margin-right: 10px">
-                        <el-button type="primary" @click="login">登录</el-button></span>
+                        <el-button type="primary" @click="login">登录</el-button>
+                    </span>
                     <span style="width: 20%">
-                        <el-button @click="$store.state.globalSignDialogVisible=true">注册</el-button></span>
+                        <el-button @click="$store.state.globalSignDialogVisible=true">注册</el-button>
+                    </span>
 
                 </el-form-item>
 
@@ -87,40 +89,49 @@
                     };
                     //qs将对象字符串化
                     let param = qs.stringify(data);
-                    this.$axios.post("/user/login", param)
+                    this.$axios.post("/user/login.do", param)
                         .then(response => {
                             if (response.data == "err") {
                                 this.$message.error('用户名或密码错误');
                             } else {
+                                console.log(response.data);
+                                let user = qs.parse(response.data);
                                 this.state.globalIsLogin = true;
                                 this.state.globalLoginDialogVisible = false;
                                 this.state.globalSignDialogVisible = false;
                                 this.state.globalHeaderNotState = "none";
                                 this.state.globalHeaderYesState = "";
                                 this.state.globalAccount = response.data.account;
-                                this.$router.push(this.$route.path);
                                 this.state.globalUserId = response.data.id;
+
                                 // 获取当前用户的收藏列表
-                                this.$axios.get("/collection/all?account="+ response.data.account).then(res => {
+                                this.$axios.get("/collection/all.do").then(res => {
 
                                     for (let i=0; i < res.data.length; i++){
-
                                         this.$store.state.globalCollections.push(res.data[i].id);
                                     }
+                                    console.log("获取当前用户的收藏列表")
                                     console.log(this.$store.state.globalCollections)
-                                })
+                                });
+                                if (user.roleName=="admin"){
+                                    this.$router.push("/management/index")
+                                }else if (user.roleName=="user"){
+
+                                this.$router.push("/");
+                                }
                             }
 
                         })
                         .catch(error => {
                             console.log(error);
                         });
-
                 }
-
             },
-
+        },
+        mounted(){
+            console.log("登录挂载")
         }
+
     }
 </script>
 

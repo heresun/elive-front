@@ -1,17 +1,20 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Index from "@/pages/Index";
 import ManaIndex from "@/pages/manage/Index"
 import App from "@/App";
 import Profile from "@/pages/Profile";
-import Collection from "@/components/Collection";
+import Collection from "@/components/profile/Collection";
 import Test from "@/pages/Test";
-import PublishHouse from "@/pages/PublishHouse";
-import BuyHouse from "@/pages/BuyHouse";
-import RentHouse from "@/pages/RentHouse";
+import PublishHouse from "@/pages/house/PublishHouse";
+import BuyHouse from "@/pages/house/BuyHouse";
 import LayoutAnalysis from "@/pages/LayoutAnalysis";
 import PriceAnalysis from "@/pages/PriceAnalysis";
-import HouseInfo from "@/pages/HouseInfo";
+import HouseInfo from "@/pages/house/HouseInfo";
+import RecommendList from "@/pages/house/RecommendList";
+import OnSaleNewHouseList from "@/pages/house/OnSaleNewHouseList";
+import OnSaleUsedHouseList from "@/pages/house/OnSaleUsedHouseList";
 
 Vue.use(VueRouter);
 
@@ -24,12 +27,12 @@ export default new VueRouter({
             component: HouseInfo
         },
         {
-            path: "/house/buy",
-            component: BuyHouse
+            path: "/house/info/:id",
+            component: HouseInfo
         },
         {
-            path: "/house/rent",
-            component: RentHouse
+            path: "/house/buy",
+            component: BuyHouse
         },
         {
             path: "/house/analysis/layout",
@@ -43,7 +46,18 @@ export default new VueRouter({
             path: "/house/publish",
             component: PublishHouse
         },
-
+        {
+            path:"/house/recommend/:type",
+            component:RecommendList
+        },
+        {
+            path:"/house/onSaleNew",
+            component:OnSaleNewHouseList
+        },
+        {
+            path:"/house/onSaleUsed",
+            component:OnSaleUsedHouseList
+        },
         {
             path: "/test",
             component: Test
