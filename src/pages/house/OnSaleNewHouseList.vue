@@ -23,9 +23,8 @@
                     </div>
 
                     <div>
-                        <HouseListExhibition url="/house/housePage.do" :type="0"></HouseListExhibition>
+                        <HouseListExhibition url="/house/housePage.do" :type="0" typeStr="新房"></HouseListExhibition>
                     </div>
-
 
                 </el-col>
             </el-row>

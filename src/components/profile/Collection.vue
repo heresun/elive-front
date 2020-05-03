@@ -1,129 +1,124 @@
 <template>
-    <div>
-        <el-row>
-            <el-divider><span class="title"> 我 的 收 藏 </span></el-divider>
-        </el-row>
-        <el-row>
-            <el-table
-                    :data="tableData"
-                    height="507"
-                    border
-                    style="width: 100%">
-                <el-table-column
-                        prop="date"
-                        label="发布日期"
-                        width="150"
-                        sortable>
-                </el-table-column>
-                <el-table-column
-                        prop="ownerName"
-                        label="发布人"
-                        width="120">
-                </el-table-column>
-                <el-table-column
-                        prop="price"
-                        label="价格/万元"
-                        width="120" sortable>
-                </el-table-column>
-                <el-table-column
-                        prop="areaSize"
-                        label="面积/平方米"
-                        width="140" sortable>
-                </el-table-column>
-                <el-table-column
-                        label="查看详情">
-                    <template slot-scope="scope">
-                        <el-button type="text" @click="lookDetail(scope.row)">查看详情 >>></el-button>
-                    </template>
-                </el-table-column>
+  <div>
+    <el-row>
+      <el-divider>
+        <span class="title">我 的 收 藏</span>
+      </el-divider>
+    </el-row>
+    <el-row>
+      <el-table :data="tableData" height="507" border style="width: 100%">
+        <el-table-column prop="date" label="发布日期" width="150" sortable></el-table-column>
+        <el-table-column prop="ownerName" label="发布人" width="120"></el-table-column>
+        <el-table-column prop="price" label="价格/万元" width="120" sortable></el-table-column>
+        <el-table-column prop="areaSize" label="面积/平方米" width="140" sortable></el-table-column>
+        <el-table-column label="查看详情">
+          <template slot-scope="scope">
+            <el-button type="text" @click="lookDetail(scope.row)">查看详情 >>></el-button>
+          </template>
+        </el-table-column>
 
-                <el-table-column
-                        label="操作">
-                    <template slot-scope="scope">
-                        <el-button type="danger" size="medium" @click="cancelCollect(scope.row)">取消收藏</el-button>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-row>
-    </div>
+        <el-table-column label="操作">
+          <template slot-scope="scope">
+            <el-button type="danger" size="medium" @click="cancelCollect(scope.row)">取消收藏</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-row>
+  </div>
 </template>
 
 <script>
+import { getDateStr, remove, removeCollection } from "../../utils/utils";
 
-    import {getDateStr, remove, removeCollection} from "../../utils/utils";
+export default {
+  name: "Collection",
+  data() {
+    return {
+      houses: [],
+      tableData: []
+    };
+  },
+  methods: {
+    cancelCollect(row) {
+      this.$confirm("确认取消收藏?", "取消收藏", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$axios
+            .get("/collection/deleteOne.do?id=" + row.cId)
+            .then(res => {
+              this.tableData = remove(this.tableData, row.cId);
+              this.$store.state.globalCollections = removeCollection(
+                this.$store.state.globalCollections,
+                row.id
+              );
+              this.$message.success("取消收藏成功!");
+              console.log(res);
+            });
+        })
+        .catch(() => {
+          console.log("取消取消收藏");
+        });
+    },
 
-    export default {
-        name: "Collection",
-        data() {
-            return {
-                houses: [],
-                tableData: []
-            }
-        },
-        methods: {
-            cancelCollect(row) {
-                this.$confirm('确认取消收藏?', '取消收藏', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: "取消",
-                    type: "warning",
-                }).then(() => {
-                    console.log(row.cId);
-                    this.$axios.get("/collection/deleteOne.do?id="+row.cId).then(res => {
-                            this.tableData = remove(this.tableData, row.cId);
-                            this.$store.state.globalCollections =
-                                removeCollection(this.$store.state.globalCollections, row.id);                            this.$message.success("取消收藏成功!");
-                        console.log(res)
-                    });
-                }).catch(() => {
-                    console.log("取消取消收藏");
-                })
-            },
-
-            lookDetail(row) {
-                let id = row.id;
-                let cId = row.cId;
-                this.$router.push(`/house/info/${id}/${cId}`);
-                console.log(row.id)
-            }
-        },
-
-        mounted() {
-            this.$axios.get("/collection/all.do").
-            then(res => {
-                console.log("res.data:");
-                console.log(res.data);
-                this.houses = res.data;
-                // this.tableData.length = this.houses.length;
-                for (let i = 0; i < this.houses.length; i++) {
-                    let date = getDateStr(this.houses[i].pubDate);
-
-                    let obj = {
-                        id: this.houses[i].id,
-                        cId: this.houses[i].cid,
-                        date: date,
-                        ownerName: this.houses[i].owner,
-                        price: this.houses[i].price ,
-                        areaSize: this.houses[i].areaSize ,
-
-                    };
-
-                    this.tableData.push(obj);
-                }
-                console.log("houses:")
-                console.log(this.houses)
-            })
-        }
+    lookDetail(row) {
+      if (row.id == null) {
+        this.$message.error("该房源已下架!");
+        return;
+      }
+      let id = row.id;
+      this.$router.push(`/house/info/${id}`);
+      console.log(row.id);
     }
+  },
+
+  mounted() {
+    this.$axios.get("/collection/all.do").then(res => {
+      this.houses = res.data;
+      // this.tableData.length = this.houses.length;
+      for (let i = 0; i < this.houses.length; i++) {
+        if (this.houses[i].ownerId != null) {
+          let date = getDateStr(this.houses[i].pubDate);
+
+          let obj = {
+            id: this.houses[i].id,
+            cId: this.houses[i].cId,
+            date: date,
+            ownerName: this.houses[i].owner,
+            price: this.houses[i].price,
+            areaSize: this.houses[i].areaSize
+          };
+
+          this.tableData.push(obj);
+        } else {
+          let date = "该房源已下架!";
+
+          let obj = {
+            id: this.houses[i].id,
+            cId: this.houses[i].cId,
+            date: date,
+            ownerName: this.houses[i].owner,
+            price: this.houses[i].price,
+            areaSize: this.houses[i].areaSize
+          };
+
+          this.tableData.push(obj);
+        }
+      }
+    });
+  }
+};
 </script>
 
 <style scoped>
+.title {
+  font-size: 20px;
+  font-weight: bold;
+}
 
-    .title {
-        font-size: 20px;
-        font-weight: bold;
-    }
-
-    .el-divider__text {
-        background-color: #f5f5f5;
-    }
+.el-divider__text {
+  background-color: #f5f5f5;
+}
 </style>

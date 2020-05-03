@@ -16,7 +16,7 @@
                 </div>
 
                 <div>
-                    <HouseListExhibition url="/house/housePage.do" :type="1"></HouseListExhibition>
+                    <HouseListExhibition url="/house/housePage.do" :type="1" typeStr="二手房"></HouseListExhibition>
                 </div>
 
 
