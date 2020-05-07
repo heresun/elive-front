@@ -45,13 +45,13 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="房屋布局" required>
-                <el-input v-model="ruleForm.bedroom" class="layout"  @focus="forceLogin"></el-input>
+                <el-input v-model="ruleForm.bedroom" class="layout" @focus="forceLogin"></el-input>
                 居室
-                <el-input v-model="ruleForm.livingroom" class="layout"  @focus="forceLogin"></el-input>
+                <el-input v-model="ruleForm.livingroom" class="layout" @focus="forceLogin"></el-input>
                 客厅
-                <el-input v-model="ruleForm.kitchen" class="layout"  @focus="forceLogin"></el-input>
+                <el-input v-model="ruleForm.kitchen" class="layout" @focus="forceLogin"></el-input>
                 厨房
-                <el-input v-model="ruleForm.bathroom" class="layout"  @focus="forceLogin"></el-input>
+                <el-input v-model="ruleForm.bathroom" class="layout" @focus="forceLogin"></el-input>
                 卫生间
 
             </el-form-item>
@@ -139,17 +139,44 @@
                 <el-input type="textarea" v-model="ruleForm.detailDesc"
                           placeholder="详细描述房屋的卖点,如周围的公共设施、交通情况等，不超过90字" @focus="forceLogin"></el-input>
             </el-form-item>
-            <el-form-item label="房屋图片" prop="">
+
+            <el-form-item label="证明材料" prop="" required>
+                <input type="file" multiple style="display:none" id="fileElemForProve" @change="getFileForProve"
+                       @focus="forceLogin"/>
+
+                <el-button areaSize="small" type="success" @click="inputFileForProve">选取文件</el-button>
+                <span class="warningInfo"> 此为必选项，若无则无法通过房屋审核！</span>
+                <div style="margin-top:5px;padding-top:0.1px;width: 900px;height: 230px; background-color: #f1f1f1;border-radius: 8px">
+                    <ul>
+                        <li v-for="(item, index) in rawHtmlForProve" :key="index">
+                            <div v-html="item"></div>
+                            <div style="text-align: center;">
+                                <el-button type="danger" icon="el-icon-delete" areaSize="mini"
+                                           @click="deleteImgForProve(index)">
+                                    删除
+                                </el-button>
+                            </div>
+
+                        </li>
+                    </ul>
+                </div>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-form-item>
+
+
+            <el-form-item label="房屋图片" prop="" required>
                 <input type="file" multiple style="display:none" id="fileElem" @change="getFile" @focus="forceLogin"/>
 
                 <el-button areaSize="small" type="success" @click="inputFile">选取文件</el-button>
+                <span class="warningInfo"> 此为必选项，若无则无法通过房屋审核！</span>
                 <div style="margin-top:5px;padding-top:0.1px;width: 900px;height: 230px; background-color: #f1f1f1;border-radius: 8px">
                     <ul>
                         <li v-for="(item, index) in rawHtml" :key="index">
                             <div v-html="item"></div>
                             <div style="text-align: center;">
 
-                                <el-button type="danger" icon="el-icon-delete" areaSize="mini" @click="deleteImg(index)">
+                                <el-button type="danger" icon="el-icon-delete" areaSize="mini"
+                                           @click="deleteImg(index)">
                                     删除
                                 </el-button>
                             </div>
@@ -171,13 +198,14 @@
 <script>
 
 
-
     export default {
         name: "SaleHouse",
         components: {},
 
         data() {
             return {
+                rawHtmlForProve: [],
+                fileListForProve: [],
                 fileList: [],
                 rawHtml: [],
                 //停车位
@@ -219,10 +247,10 @@
                     level: "",
                     type: "",
                     naturalGas: "",
-                    bedroom:"",
-                    bathroom:"",
-                    livingroom:"",
-                    kitchen:"",
+                    bedroom: "",
+                    bathroom: "",
+                    livingroom: "",
+                    kitchen: "",
 
 
                 },
@@ -321,6 +349,39 @@
         },
         methods: {
 
+            getFileForProve() {
+                let that = this;
+                let inputELe = document.getElementById("fileElemForProve");
+                this.fileListForProve.push(inputELe.files[0]);
+                if (this.fileListForProve.length > 5) {
+                    alert("最多上传的5张图片");
+                    this.fileListForProve.slice(this.fileList.length - 1, 1);
+                    return;
+                }
+
+                let reader = new FileReader();
+                reader.readAsDataURL(inputELe.files[0]);
+
+                reader.onload = function (e) {
+                    // document.getElementById("imgshow").src = e.target.result
+                    let str = "<img width='150px' height='150px' style='border-radius:2px' src='" + e.target.result + "'/>";
+                    that.rawHtmlForProve.push(str)
+                };
+            },
+            inputFileForProve() {
+                let isLogin = this.forceLogin();
+                if (isLogin) {
+                    return 0;
+                }
+                let inputELe = document.getElementById("fileElemForProve");
+                var a = document.createEvent("MouseEvents");
+                a.initEvent("click", true, true);
+                inputELe.dispatchEvent(a);
+            },
+            deleteImgForProve(index) {
+                this.fileListForProve.splice(index, 1);
+                this.rawHtmlForProve.splice(index, 1)
+            },
             forceLogin() {
 
                 if (!this.$store.state.globalIsLogin) {
@@ -328,7 +389,6 @@
                     return true;
                 }
             },
-
             deleteImg(index) {
                 this.fileList.splice(index, 1);
                 this.rawHtml.splice(index, 1)
@@ -408,16 +468,37 @@
                                 // 创建表单对象
                                 let form = new FormData();
                                 // 填充地区数据信息
-                                let district  = this.ruleForm.areaId;
+                                let district = this.ruleForm.areaId;
                                 this.ruleForm.provinceId = district[0];
                                 this.ruleForm.cityId = district[1];
                                 this.ruleForm.areaId = district[2];
-                                form.append("house",JSON.stringify(this.ruleForm))
+                                form.append("house", JSON.stringify(this.ruleForm));
 
                                 this.$axios.post("/house/addOne.do", form).then(res => {
-                                    if (res.data > 0) {
-                                        this.$message.success("发布成功，工作人员正在审核中！")
-                                        this.$router.push("/")
+                                    if (res.data != "err") {
+                                        let houseNumber = res.data;
+
+                                        let files = new FormData();
+                                        for (let i = 0; i < this.fileListForProve.length; i++) {
+                                            files.append("files", this.fileListForProve[i]);
+                                        }
+                                        this.$axios.post("/upload/img.do", files).then(res => {
+                                            if (res.data==="ok"){
+                                                var form = new FormData();
+                                                form.append("houseNumber",houseNumber);
+                                                this.$axios.post("/house/addProve.do",form).then(res=>{
+                                                    if(res.data === "ok"){
+                                                        this.$message.success("发布成功，工作人员正在审核中！")
+                                                        this.$router.push("/")
+                                                    }
+                                                }).catch(err=>{
+                                                    console.log(err)
+                                                });
+                                            }
+                                        }).catch(err=>{
+                                            console.log(err);
+                                        })
+
                                     }
                                 }).catch(err => {
                                     console.log(err)
@@ -435,7 +516,7 @@
                 });
             },
 
-            test(){
+            test() {
                 console.log(this.ruleForm);
             }
 
@@ -491,6 +572,11 @@
 </script>
 
 <style scoped>
+    .warningInfo {
+        font-size: 12px;
+        font-weight: bold;
+        color:orangered;
+    }
 
     li {
         float: left;
@@ -498,7 +584,8 @@
         list-style: none;
     }
 
-    .layout{
-        display: inline-block;width: 60px;
+    .layout {
+        display: inline-block;
+        width: 60px;
     }
 </style>

@@ -14,7 +14,7 @@
                     <el-aside class="aside" width="152px">
                         <el-row>
                             <div align="center">
-                                <img src="../assets/timg.jpg" alt="" style="width: 80px; height: 80px">
+                                <img :src="$store.state.globalUserInfo.photo" alt="" style="width: 80px; height: 80px">
                             </div>
                             <div style="text-align: center;margin: 10px auto">欢迎你,
                                 {{$store.state.globalAccount.substr(0,3)+"****"+$store.state.globalAccount.substr(8)}}
@@ -37,11 +37,8 @@
                                 <li :class="{active:flag==='contract'}" @click="showSelected('contract')">
                                     我的合同
                                 </li>
-                                <li :class="{active:flag==='appointment'}" @click="showSelected('appointment')">
-                                    我的预约
-                                </li>
-                                <li :class="{active:flag==='inspection'}" @click="showSelected('inspection')">
-                                    看房记录
+                                <li :class="{active:flag==='messageInfo'}" @click="showSelected('messageInfo')">
+                                    我的消息
                                 </li>
                                 <li :class="{active:flag==='editInfo'}" @click="showSelected('editInfo')">
                                     编辑资料
@@ -49,14 +46,12 @@
 
                             </ul>
                         </el-row>
-
                     </el-aside>
                     <el-main class="main">
                         <Collection :style="`display:${profileList.collection}`"></Collection>
                         <Transaction :style="`display:${profileList.transaction}`"></Transaction>
                         <Contract :style="`display:${profileList.contract}`"></Contract>
-                        <Appointment :style="`display:${profileList.appointment}`"></Appointment>
-                        <Inspection :style="`display:${profileList.inspection}`"></Inspection>
+                        <Message :style="`display:${profileList.messageInfo}`"></Message>
                         <EditInfo :style="`display:${profileList.editInfo}`"></EditInfo>
                         <PublishedHouse :style="`display:${profileList.publishedHouse}`"></PublishedHouse>
                     </el-main>
@@ -80,10 +75,8 @@
     import Transaction from "@/components/profile/Transaction";
     // 合同
     import Contract from "@/components/profile/Contract";
-    // 预约
-    import Appointment from "@/components/profile/Appointment";
-    // 看房记录
-    import Inspection from "@/components/profile/Inspection";
+    // 我的消息
+    import Message from "@/components/profile/Message";
     // 编辑资料
     import EditInfo from "@/components/profile/EditInfo";
     // 用户发布的房源
@@ -98,9 +91,8 @@
                     transaction: "none",
                     collection: "none",
                     contract: "none",
-                    appointment: "none",
                     editInfo: "none",
-                    inspection: "none",
+                    messageInfo: "none",
                     publishedHouse: "none"
                 },
                 flag:""
@@ -111,8 +103,7 @@
             Collection,
             Transaction,
             Contract,
-            Appointment,
-            Inspection,
+            Message,
             EditInfo,
             Footer,
             PublishedHouse
@@ -133,13 +124,10 @@
                         this.hiddenAllCom();
                         this.profileList.contract = "";
                         break;
-                    case "appointment":
+
+                    case "messageInfo":
                         this.hiddenAllCom();
-                        this.profileList.appointment = "";
-                        break;
-                    case "inspection":
-                        this.hiddenAllCom();
-                        this.profileList.inspection = "";
+                        this.profileList.messageInfo = "";
                         break;
                     case "editInfo":
                         this.hiddenAllCom();
@@ -197,7 +185,7 @@
     ul > li {
         list-style: none;
         text-align: left;
-        padding: 15px 25px;
+        padding: 18px 35px;
         cursor: pointer;
 
     }

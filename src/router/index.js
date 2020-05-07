@@ -2,7 +2,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import Index from "@/pages/Index";
-import ManaIndex from "@/pages/manage/Index"
 import App from "@/App";
 import Profile from "@/pages/Profile";
 import Collection from "@/components/profile/Collection";
@@ -15,6 +14,7 @@ import HouseInfo from "@/pages/house/HouseInfo";
 import RecommendList from "@/pages/house/RecommendList";
 import OnSaleNewHouseList from "@/pages/house/OnSaleNewHouseList";
 import OnSaleUsedHouseList from "@/pages/house/OnSaleUsedHouseList";
+
 
 Vue.use(VueRouter);
 
@@ -83,11 +83,14 @@ export default new VueRouter({
             path: "/",
             component: App
         },
-
-        //  后台管理模块的路由信息
         {
-            path: "/management/index",
-            component: ManaIndex
+            path: "/house/houseAnalysis",
+            component:()=>import("@/pages/HouseAnalysis")
+        },
+        {
+            path: "/house/transactionAnalysis",
+            component: ()=>import("@/pages/TransactionAnalysis")
         }
+
     ]
 });

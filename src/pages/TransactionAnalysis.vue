@@ -5,11 +5,16 @@
         </el-row>
         <div style="height: 50px"></div>
         <el-row>
-            <el-col :span="4" :offset="4">
+            <el-col :span="8" :offset="4">
                 <div style="
                 color:rgba(0,0,0,0.7);
                 font-weight:700;font-size: 20px;
-                font-family: 'Arial Narrow';">{{$store.state.globalCityName}}市房源价格分析图
+                font-family: 'Arial Narrow';">{{$store.state.globalCityName}}市过去十二个月交易量分析图
+                </div>
+                <div style="margin-top: 20px">
+                    <el-select v-model="areaId" placeholder="请选择区或县" size="mini" @change="getData">
+                        <el-option v-for="item in areas" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                    </el-select>
                 </div>
             </el-col>
         </el-row>
@@ -35,16 +40,15 @@
     import Footer from "@/components/common/Footer";
 
     export default {
-        name: "PriceAnalysis",
+        name: "LayoutAnalysis",
         components: {
             Footer,
             Navigator,
         },
         data() {
             this.chartSettings = {
-                axisSite: {right: ['同比增长']},
-                yAxisType: ['KMB', 'percent'],
-                yAxisName: ['万元', '同比增长率']
+                yAxisType: ['KMB'],
+                yAxisName: ['成交量']
             };
             this.toolbox = {
                 feature: {
@@ -60,14 +64,36 @@
                 }
             ];
             return {
+                areas: [],
+                areaId: "",
                 chartData: {
-                    columns: ["区/县", '平均成交价格', '平均发布价格', '同比增长'],
+                    columns: ['月份', "成交量"],
                     rows: []
                 }
             }
         },
-        mounted() {
+        methods: {
+            getData() {
+                this.chartData.rows = []
+                this.$axios.get("/analysis/getTransAnalysis.do?areaId=" + this.areaId).then(res => {
 
+                    let data = res.data;
+                    for (let i = 0; i < data.length; i++) {
+                        let obj = {
+                            "月份": data[i].dataStr,
+                            "成交量": data[i].transCount,
+                        }
+                        this.chartData.rows.push(obj);
+                    }
+
+                    this.chartData.rows.reverse();
+
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+        },
+        mounted() {
 
             this.$axios
                 .post("/util/globalCity.do")
@@ -82,31 +108,36 @@
                         console.log(res.data);
                     }
 
-                    this.$axios.get("/analysis/getPriceAnalysis.do?cityId=" + this.$store.state.globalCityId).then(res => {
 
-                        let data = res.data;
-                        for (let i = 0; i < data.length; i++) {
-                            let obj = {
-                                "区/县": data[i].area,
-                                "平均成交价格": data[i].transPrice,
-                                "平均发布价格": data[i].pubPrice,
-                                "同比增长": data[i].priceDiff,
+                    this.$axios.get("/district/location.do?pId=" + this.$store.state.globalCityId).then(res => {
+                        this.areas = res.data;
+                        let initId = res.data[0].id;
+                        this.areaId = initId;
+                        this.chartData.rows = []
+                        this.$axios.get("/analysis/getTransAnalysis.do?areaId=" + initId).then(res => {
+
+                            let data = res.data;
+                            for (let i = 0; i < data.length; i++) {
+                                let obj = {
+                                    "月份": data[i].dataStr,
+                                    "成交量": data[i].transCount,
+                                }
+                                this.chartData.rows.push(obj);
                             }
-                            this.chartData.rows.push(obj);
-                        }
+
+                            this.chartData.rows.reverse();
+
+                        }).catch(err => {
+                            console.log(err)
+                        })
 
                     }).catch(err => {
                         console.log(err)
                     })
-
-
                 })
                 .catch(err => {
                     console.log(err);
                 });
-
-
-
         }
     }
 </script>

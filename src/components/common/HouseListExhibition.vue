@@ -527,6 +527,38 @@ export default {
         } else {
           this.$store.state.globalCityId = 149;
           this.$store.state.globalCityName = "郑州";
+
+          (this.typeString = this.typeStr), (this.params.page = 1);
+          this.params.count = 10;
+          this.params.type = this.type;
+          this.params.address = this.$store.state.globalAddress;
+
+          this.params.cityId = this.$store.state.globalCityId;
+          // 创建表单对象
+          let form = new FormData();
+          this.form = form;
+          // 往表单里放参数
+          form.append(this.paramName, JSON.stringify(this.params));
+
+          this.getNewPage(form);
+          this.getNewPageNewest(form);
+          this.getNewPageByPriceAesc(form);
+          this.getNewPageByAreaAesc(form);
+
+          // 获取城市区/县数据
+          this.$axios(
+                  "/district/location.do?pId=" + this.$store.state.globalCityId
+          )
+                  .then(res => {
+                    this.areas = res.data;
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
+
+          this.addParamsToBus();
+
+
           console.log(res.data);
         }
       })

@@ -41,7 +41,7 @@
             },
 
             getImages(){
-                this.$axios.get("/image/url/ZF23036049610999/api.do").then(res=>{
+                this.$axios.get("/house/getRecommend.do").then(res=>{
                     console.log(res)
                 }).catch(err=>{
                     console.log(err)

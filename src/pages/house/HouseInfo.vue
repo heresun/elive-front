@@ -47,9 +47,6 @@
                 >{{collectText}}</el-button>
               </div>
             </el-col>
-            <el-col :span="6" class="topTip">
-              <el-button type="text">预定>>></el-button>
-            </el-col>
           </el-row>
         </el-col>
       </el-row>

@@ -40,7 +40,7 @@
           style="width: 100px;vertical-align: central;margin: 3px auto 1px auto"
         />
       </el-col>
-      <el-col :span="12" class="navText">
+      <el-col :span="14" class="navText">
         <ul>
           <li>
             <router-link to="/" class="router-link-active">
@@ -64,7 +64,10 @@
             <span class="text" @click="priceAnalysis">房价分析</span>
           </li>
           <li>
-            <span class="text" @click="priceAnalysis">交易分析</span>
+            <span class="text" @click="$router.push('/house/transactionAnalysis')">交易分析</span>
+          </li>
+          <li>
+            <span class="text" @click="$router.push('/house/houseAnalysis')">房源分析</span>
           </li>
         </ul>
       </el-col>

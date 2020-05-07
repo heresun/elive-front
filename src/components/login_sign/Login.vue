@@ -95,7 +95,6 @@
                                 this.$message.error('用户名或密码错误');
                             } else {
                                 console.log(response.data);
-                                let user = qs.parse(response.data);
                                 this.state.globalIsLogin = true;
                                 this.state.globalLoginDialogVisible = false;
                                 this.state.globalSignDialogVisible = false;
@@ -113,12 +112,8 @@
                                     console.log("获取当前用户的收藏列表")
                                     console.log(this.$store.state.globalCollections)
                                 });
-                                if (user.roleName=="admin"){
-                                    this.$router.push("/management/index")
-                                }else if (user.roleName=="user"){
-
+                                this.$store.state.globalUserInfo = response.data;
                                 this.$router.push("/");
-                                }
                             }
 
                         })

@@ -28,6 +28,7 @@ export default {
           this.$store.state.globalAccount = res.data.account;
           this.$store.state.globalHeaderNotState = "none";
           this.$store.state.globalHeaderYesState = "";
+          this.$store.state.globalUserInfo = res.data;
           
           // 获取当前用户的收藏列表
           this.$axios
@@ -55,6 +56,7 @@ export default {
         } else {
           this.$store.state.globalCityId = 149;
            this.$store.state.globalCityName = "郑州";
+           this.getHousePage();
           console.log(res.data);
         }
       })

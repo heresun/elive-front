@@ -107,7 +107,7 @@
         </span>
       </el-col>
 
-      <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="0" style="margin-right:30px">
+      <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="0" style="margin-right:45px">
         <span style="color:white;font-size: 12px;cursor: pointer" @click="logout">
           <i style="font-style: normal">退 出</i>
         </span>
@@ -118,7 +118,7 @@
 
     <!-- 主页左侧 logo和定位 -->
     <el-row type="flex" justify="end">
-      <el-col :span="8">
+      <el-col :span="6">
         <div class="imgAndlocation">
           <div>
             <img src="../../assets/ee.png" width="120" />
@@ -135,7 +135,7 @@
         </div>
       </el-col>
 
-      <el-col :span="13">
+      <el-col :span="15">
         <ul>
           <li>
             <router-link to="/" class="router-link-active">
@@ -158,7 +158,10 @@
             <span class="text" @click="priceAnalysis">房价分析</span>
           </li>
           <li>
-            <span class="text" @click="priceAnalysis">交易分析</span>
+            <span class="text" @click="$router.push('/house/transactionAnalysis')">交易分析</span>
+          </li>
+          <li>
+            <span class="text" @click="$router.push('/house/houseAnalysis')">房源分析</span>
           </li>
         </ul>
       </el-col>

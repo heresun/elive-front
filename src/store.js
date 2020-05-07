@@ -42,17 +42,10 @@ const state = {
   houseList:[], // 默认排序
   houseListNewest:[], // 最新发布
   houseListByPrice:[], // 按价格升序
-  houseListByArea:[] // 按面积升序
+  houseListByArea:[], // 按面积升序
 
-
-  // newHouseList:[],
-  // usedHouseList:[],
-  // newHouseListNewest:[],
-  // usedHouseListNewest:[],
-
-  // houseListByPrice
-
-
+// 全局用户信息
+  globalUserInfo:{}
 
 
 

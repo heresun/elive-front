@@ -3,16 +3,15 @@ import App from './App.vue'
 import ElementUI from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
 import axios from 'axios'
-import Croppa from "vue-croppa"
-import "vue-croppa/dist/vue-croppa.css"
+import  VCharts from "v-charts";
+
 
 import router from './router'
 import store from "@/store";
 
 
 Vue.use(ElementUI);
-Vue.use(Croppa);
-
+Vue.use(VCharts)
 Vue.config.productionTip = false;
 
 

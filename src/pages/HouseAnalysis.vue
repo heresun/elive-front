@@ -5,11 +5,11 @@
         </el-row>
         <div style="height: 50px"></div>
         <el-row>
-            <el-col :span="4" :offset="4">
+            <el-col :span="8" :offset="4">
                 <div style="
                 color:rgba(0,0,0,0.7);
                 font-weight:700;font-size: 20px;
-                font-family: 'Arial Narrow';">{{$store.state.globalCityName}}市房源价格分析图
+                font-family: 'Arial Narrow';">{{$store.state.globalCityName}}市过去各区成交房屋统计表
                 </div>
             </el-col>
         </el-row>
@@ -19,7 +19,6 @@
                 <div>
                     <ve-line :data="chartData" :settings="chartSettings" :toolbox="toolbox"
                              :data-zoom="dataZoom"></ve-line>
-                    <span style="color:orangered;font-size: 12px">注:同比增长率=(平均交易价格-平均发布价格)/平均发布价格</span>
                 </div>
             </el-col>
         </el-row>
@@ -35,16 +34,15 @@
     import Footer from "@/components/common/Footer";
 
     export default {
-        name: "PriceAnalysis",
+        name: "LayoutAnalysis",
         components: {
             Footer,
             Navigator,
         },
         data() {
             this.chartSettings = {
-                axisSite: {right: ['同比增长']},
-                yAxisType: ['KMB', 'percent'],
-                yAxisName: ['万元', '同比增长率']
+                yAxisType: ['KMB'],
+                yAxisName: ['成交量']
             };
             this.toolbox = {
                 feature: {
@@ -61,14 +59,14 @@
             ];
             return {
                 chartData: {
-                    columns: ["区/县", '平均成交价格', '平均发布价格', '同比增长'],
+                    columns: ['区/县', "成交量"],
                     rows: []
                 }
             }
         },
+        methods: {
+        },
         mounted() {
-
-
             this.$axios
                 .post("/util/globalCity.do")
                 .then(res => {
@@ -82,31 +80,25 @@
                         console.log(res.data);
                     }
 
-                    this.$axios.get("/analysis/getPriceAnalysis.do?cityId=" + this.$store.state.globalCityId).then(res => {
-
+                    this.$axios.get("/analysis/getHouseAnalysis.do?cityId=" + this.$store.state.globalCityId).then(res => {
                         let data = res.data;
                         for (let i = 0; i < data.length; i++) {
                             let obj = {
-                                "区/县": data[i].area,
-                                "平均成交价格": data[i].transPrice,
-                                "平均发布价格": data[i].pubPrice,
-                                "同比增长": data[i].priceDiff,
+                                "区/县": data[i].district,
+                                "成交量": data[i].count,
                             }
                             this.chartData.rows.push(obj);
                         }
 
+                        this.chartData.rows.reverse();
+
                     }).catch(err => {
                         console.log(err)
                     })
-
-
                 })
                 .catch(err => {
                     console.log(err);
                 });
-
-
-
         }
     }
 </script>
