@@ -9,7 +9,7 @@
                 <div style="
                 color:rgba(0,0,0,0.7);
                 font-weight:700;font-size: 20px;
-                font-family: 'Arial Narrow';">{{$store.state.globalCityName}}市过去各区成交房屋统计表
+                font-family: 'Arial Narrow';">{{$store.state.globalCityName}}市各区成交房屋统计表
                 </div>
             </el-col>
         </el-row>

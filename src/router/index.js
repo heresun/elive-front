@@ -47,7 +47,7 @@ export default new VueRouter({
             component: PublishHouse
         },
         {
-            path:"/house/recommend/:type",
+            path:"/house/recommend",
             component:RecommendList
         },
         {

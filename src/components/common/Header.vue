@@ -270,6 +270,27 @@ export default {
         .catch(err => {
           console.log(err);
         });
+
+      let form2 = new FormData();
+      let obj2 = {
+        page: 1,
+        count: 4,
+        // type: type2,
+        cityId: this.$store.state.globalCityId
+      };
+      form2.append("filterParams", JSON.stringify(obj2));
+      this.$axios
+              .post("/house/getRecommend.do", form2)
+              .then(res => {
+                this.$store.state.recoHouseIndex = res.data.housePage;
+
+              })
+              .catch(err => {
+                console.log(err);
+              });
+
+
+
     },
     selectLocation() {
       // 先把省 id和全局市 id置空

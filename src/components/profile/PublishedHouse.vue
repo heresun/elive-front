@@ -490,21 +490,27 @@
         },
         methods: {
             inputFileForProve() {
+                console.log("fuckyou 1 --------------------------------------------------------------------button")
                 let isLogin = this.forceLogin();
                 if (isLogin) {
                     return 0;
                 }
+                console.log("fuckyou 2 --------------------------------------------------------------------button")
+
                 let inputELe = document.getElementById("fileElemForProve");
                 var a = document.createEvent("MouseEvents");
                 a.initEvent("click", true, true);
                 inputELe.dispatchEvent(a);
             },
             getFileForProve() {
+                console.log("fuckyou 1 --------------------------------------------------------------------input")
+
                 let that = this;
                 let inputELe = document.getElementById("fileElemForProve");
 
                 this.fileListForProve.push(inputELe.files[0]);
                 this.newImagesForPorve.push(inputELe.files[0]);
+                console.log("fuckyou 2 --------------------------------------------------------------------input")
 
                 if (this.fileListForProve.length > 5) {
                     alert("最多上传的5张图片");
@@ -513,25 +519,32 @@
                     return;
                 }
 
+                console.log("fuckyou 3 --------------------------------------------------------------------input")
+
                 let reader = new FileReader();
                 reader.readAsDataURL(inputELe.files[0]);
 
                 reader.onload = function (e) {
-                    // document.getElementById("imgshow").src = e.target.result
                     let str =
                         "<img width='150px' height='150px' style='border-radius:2px' src='" +
                         e.target.result +
                         "'/>";
                     that.rawHtmlForProve.push(str);
                 };
+
+                console.log("fuckyou 4 --------------------------------------------------------------------input")
+
             },
             deleteImgForProve(index) {
+
+
                 // 判断新加入的图片对象是否存在于新图片数组中，如果存在则删除之
                 if (this.newImagesForPorve.indexOf(this.fileList[index]) >= 0) {
                     let newIndex = this.newImagesForPorve.indexOf(this.fileList[index]);
                     let result = this.newImagesForPorve.splice(newIndex, 1);
                     console.log(result[0].name);
                 }
+
                 this.rawHtmlForProve.splice(index, 1);
                 let img = this.fileListForProve.splice(index, 1)[0];
 

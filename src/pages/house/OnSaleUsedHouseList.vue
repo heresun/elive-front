@@ -45,6 +45,10 @@
             HouseListExhibition,
             SearchBox,
 
+        },
+        mounted(){
+            this.$store.state.globalSearchType = 1
+
         }
     }
 </script>

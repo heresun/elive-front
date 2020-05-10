@@ -53,6 +53,9 @@
             HouseListExhibition,
             SearchBox,
 
+        },
+        mounted(){
+            this.$store.state.globalSearchType = 0;
         }
     }
 </script>

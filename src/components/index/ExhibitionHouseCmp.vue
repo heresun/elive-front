@@ -11,10 +11,10 @@
     <el-row type="flex" justify="left">
       <el-col :span="18" :offset="3">
         <el-col
-          style="width: 265px;"
-          v-for="(item, index) in houses"
-          :key="item"
-          :style="`margin-left:${index > 0 ? 26 : 0}`+'px'"
+                style="width: 265px;"
+                v-for="(item, index) in $store.state.recoHouseIndex"
+                :key="item"
+                :style="`margin-left:${index > 0 ? 26 : 0}`+'px'"
         >
           <el-card :body-style="{ padding: '0px' }" shadow="hover">
             <img :src="item.url" class="image" hidden="hidden" />
@@ -32,10 +32,10 @@
                 </time>
                 <div style="height: 20px;padding-top: 5px;">
                   <el-button
-                    type="text"
-                    size="small"
-                    class="button"
-                    @click="lookDetail(item.id)"
+                          type="text"
+                          size="small"
+                          class="button"
+                          @click="lookDetail(item.id)"
                   >详情>>></el-button>
                 </div>
               </div>
@@ -48,99 +48,81 @@
 </template>
 
 <script>
-export default {
-  name: "ExhibitionHouseCmp",
-  data() {
-    return {
-      houses: []
-    };
-  },
-  props: {
-    toHouseListUrl: String,
-    exhibitionUrl: String,
-    title: String,
-    desc: String,
-    type: Number
-  },
-  methods: {
-    moreHouses() {
-      this.$router.push(this.toHouseListUrl);
+  export default {
+    name: "ExhibitionHouseCmp",
+    data() {
+      return {
+        houses: []
+      };
     },
-    lookDetail(id) {
-      this.$router.push("/house/info/" + `${id}`);
-    }
-  },
-  mounted() {
-    let type = this.type;
-    let form = new FormData();
-    let obj = { page: 1, count: 4, type: type };
-    form.append("filterParams", JSON.stringify(obj));
-    this.$axios
-      .post(this.exhibitionUrl, form)
-      .then(res => {
-        if (type == 0) {
-          this.$store.state.newHouseIndex = res.data.housePage;
-        
-        }else if(type == 1){
-            this.$store.state.usedHouseIndex = res.data.housePage
-        }
+    props: {
+      toHouseListUrl: String,
+      exhibitionUrl: String,
+      title: String,
+      desc: String,
+      type: Number
+    },
+    methods: {
+      moreHouses() {
+        this.$router.push(this.toHouseListUrl);
+      },
+      lookDetail(id) {
+        this.$router.push("/house/info/" + `${id}`);
+      }
+    },
+    mounted() {
 
-        console.log(this.houses);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-};
+    }
+  };
 </script>
 
 <style scoped>
-.headTitle {
-  font-size: 26px;
-  font-weight: bold;
-}
+  .headTitle {
+    font-size: 26px;
+    font-weight: bold;
+  }
 
-.simpleDesc {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-}
+  .simpleDesc {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
 
-.el-divider--horizontal {
-  margin-top: 0px;
-  margin-bottom: 10px;
-}
+  .el-divider--horizontal {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
 
-.time {
-  font-size: 13px;
-  color: #999;
-  margin-right: 5px;
-}
+  .time {
+    font-size: 13px;
+    color: #999;
+    margin-right: 5px;
+  }
 
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-}
+  .bottom {
+    margin-top: 13px;
+    line-height: 12px;
+  }
 
-.button {
-  padding: 0;
-  float: right;
-}
+  .button {
+    padding: 0;
+    float: right;
+  }
 
-.image {
-  width: 100%;
-  display: block;
-  height: 200px;
-}
+  .image {
+    width: 100%;
+    display: block;
+    height: 200px;
+  }
 
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
+  .clearfix:before,
+  .clearfix:after {
+    display: table;
+    content: "";
+  }
 
-.clearfix:after {
-  clear: both;
-}
+  .clearfix:after {
+    clear: both;
+  }
 </style>

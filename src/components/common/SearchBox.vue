@@ -91,8 +91,7 @@ export default {
         }
 
         this.$router.push("/house/onSaleNew");
-      }
-      if (this.$store.state.globalSearchType == 1) {
+      }else if (this.$store.state.globalSearchType == 1) {
          if(this.$route.path.indexOf("onSaleUsed") > -1){
           let form = new FormData();
           this.params.address = this.inputData;
@@ -105,7 +104,23 @@ export default {
         }
 
         this.$router.push("/house/onSaleUsed");
+      }else {
+        if(this.$route.path.indexOf("recommend") > -1){
+          let form = new FormData();
+          this.params.address = this.inputData;
+          this.params.page = 1;
+          form.append(this.paramName,JSON.stringify(this.params));
+          this.getNewPage(form);
+          this.getNewPageNewest(form);
+          this.getNewPageByPriceAesc(form);
+          this.getNewPageByAreaAesc(form);
+        }
+
+        this.$router.push("/house/recommend");
       }
+
+
+
     },
 
     getNewPage(form) {
@@ -115,7 +130,7 @@ export default {
         .post(this.url, form)
         .then(res => {
           this.$store.state.houseList = res.data.housePage;
-          this.total = res.data.houseCount;
+          this.$store.state.globalTotal  = res.data.houseCount;
         })
         .catch(err => {
           console.log(err);
@@ -133,7 +148,7 @@ export default {
         .post(this.url, innerForm)
         .then(res => {
           this.$store.state.houseListNewest = res.data.housePage;
-          this.total = res.data.houseCount;
+          this.$store.state.globalTotal  = res.data.houseCount;
         })
         .catch(err => {
           console.log(err);
@@ -152,7 +167,7 @@ export default {
         .post(this.url, innerForm)
         .then(res => {
           this.$store.state.houseListByPrice = res.data.housePage;
-          this.total = res.data.houseCount;
+          this.$store.state.globalTotal = res.data.houseCount;
         })
         .catch(err => {
           console.log(err);
@@ -171,7 +186,7 @@ export default {
         .post(this.url, innerForm)
         .then(res => {
           this.$store.state.houseListByArea = res.data.housePage;
-          this.total = res.data.houseCount;
+          this.$store.state.globalTotal = res.data.houseCount;
         })
         .catch(err => {
           console.log(err);

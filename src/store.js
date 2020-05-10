@@ -33,10 +33,12 @@ const state = {
   globalAddress:"",
   // 搜索类型，0 为 新房， 1 为二手房
   globalSearchType:0,
+  globalTotal:0,
 
   // 用于保存主页的展示的数据
   newHouseIndex:[],
   usedHouseIndex:[],
+  recoHouseIndex:[],
 
   // 这四个个数组用来保存在售房屋数据，分别为新房和二手房
   houseList:[], // 默认排序

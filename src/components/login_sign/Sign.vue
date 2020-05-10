@@ -4,7 +4,7 @@
 
             <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
                 <el-form-item label="账号" prop="account">
-                    <el-input type="text" v-model="ruleForm.account" @blur="accountVer"></el-input>
+                    <el-input type="text" v-model="ruleForm.account" ></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
                     <el-input type="password" v-model="ruleForm.password"></el-input>
@@ -40,7 +40,7 @@
             var accountVer = (rule, value, callback) => {
                 let form = new FormData();
                 form.append("account", this.ruleForm.account);
-                this.$axios.post("/user/uniqueVer", form).then(res => {
+                this.$axios.post("/user/uniqueVer.do", form).then(res => {
                     if (res.data == "err") {
 
                         callback(new Error("该用户已经存在"));
@@ -48,7 +48,7 @@
                         callback()
                     }
                 }).catch(err => {
-                    alert(err.status);
+                    console.log(err.status);
                 })
             };
 

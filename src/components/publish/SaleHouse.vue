@@ -191,7 +191,6 @@
             <el-button class="el-button--default" @click="$router.push('/')">取消</el-button>
 
         </el-form>
-        <el-button @click="test">财务室</el-button>
     </div>
 </template>
 
@@ -387,6 +386,9 @@
                 if (!this.$store.state.globalIsLogin) {
                     this.$store.state.globalLoginDialogVisible = true;
                     return true;
+                } else if (this.$store.state.globalUserInfo.examineType == 0) {
+                    this.$message.error("您还未审核通过，请审核通过操作！")
+                    return false;
                 }
             },
             deleteImg(index) {
@@ -483,19 +485,19 @@
                                             files.append("files", this.fileListForProve[i]);
                                         }
                                         this.$axios.post("/upload/img.do", files).then(res => {
-                                            if (res.data==="ok"){
+                                            if (res.data === "ok") {
                                                 var form = new FormData();
-                                                form.append("houseNumber",houseNumber);
-                                                this.$axios.post("/house/addProve.do",form).then(res=>{
-                                                    if(res.data === "ok"){
+                                                form.append("houseNumber", houseNumber);
+                                                this.$axios.post("/house/addProve.do", form).then(res => {
+                                                    if (res.data === "ok") {
                                                         this.$message.success("发布成功，工作人员正在审核中！")
                                                         this.$router.push("/")
                                                     }
-                                                }).catch(err=>{
+                                                }).catch(err => {
                                                     console.log(err)
                                                 });
                                             }
-                                        }).catch(err=>{
+                                        }).catch(err => {
                                             console.log(err);
                                         })
 
@@ -575,7 +577,7 @@
     .warningInfo {
         font-size: 12px;
         font-weight: bold;
-        color:orangered;
+        color: orangered;
     }
 
     li {
